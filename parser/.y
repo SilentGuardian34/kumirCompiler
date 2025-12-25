@@ -33,8 +33,8 @@
 %right UMINUS
 %right POW
 
-%location
-%start program
+
+%start algorithm_list
 
 %%
 
@@ -70,9 +70,18 @@ argument_list
     ;
 
 conditions
-    : DANO condition_description nl NADO condition_description
+    : conditions nl condition
+    | condition
+    ;
+
+condition
+    : DANO condition_description
     | NADO condition_description
-    | DANO condition_description
+    ;
+
+condition_description
+    : STRING
+    | NAME
     ;
 
 argument_declaration
