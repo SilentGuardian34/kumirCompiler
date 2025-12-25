@@ -24,6 +24,10 @@
   <ItemGroup>
     <ClInclude Include="unistd.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".l" />
+    <None Include="flex++.exe" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

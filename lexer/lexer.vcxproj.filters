@@ -24,4 +24,12 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="flex++.exe">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include=".l">
+      <Filter>Исходные файлы</Filter>
+    </None>
+  </ItemGroup>
 </Project>

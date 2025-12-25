@@ -10,9 +10,9 @@
 %option never-interactive
 %option 8bit
 
-%x DATATYPE
+%x STR_ERR
 
-NAME_CHAR "[A-Za-z_]|\xD0[\x81\x90-\xBF]|\xD1[\x91\x80-\x8F]"
+NAME_CHAR [A-Za-z_]|\xD0[\x81\x90-\xBF]|\xD1[\x91\x80-\x8F]
 
 %%
 
@@ -44,32 +44,19 @@ NAME_CHAR "[A-Za-z_]|\xD0[\x81\x90-\xBF]|\xD1[\x91\x80-\x8F]"
 "все" cout << "Found branching end" << endl;
 
 "цел" {
-	cout << "Found int";
-	BEGIN(DATATYPE);
+	cout << "Found int" << endl;
 }
 "вещ" {
-	cout << "Found float";
-	BEGIN(DATATYPE);
+	cout << "Found float" << endl;
 }
 "лог" {
-	cout << "Found bool";
-	BEGIN(DATATYPE);
+	cout << "Found bool" << endl;
 }
 "сим" {
-	cout << "Found char";
-	BEGIN(DATATYPE);
+	cout << "Found char" << endl;
 }
 "лит" {
-	cout << "Found string";
-	BEGIN(DATATYPE);
-}
-<DATATYPE>\s*таб {
-	cout << " array" << endl;
-	BEGIN(INITIAL);
-}
-<DATATYPE>"" {
-	cout << endl;
-	BEGIN(INITIAL);
+	cout << "Found string" << endl;
 }
 "таб" cout << "Found array" << endl;
 
@@ -94,7 +81,12 @@ NAME_CHAR "[A-Za-z_]|\xD0[\x81\x90-\xBF]|\xD1[\x91\x80-\x8F]"
 	string str = string(yytext);
 	cout << "Found string constant: " << str.substr(1, str.size() - 2) << endl;
 }
-('|\").* cout << "Found missing terminating quotation mark error: " << yytext + 1 << endl;
+('|\") BEGIN(STR_ERR);
+
+<STR_ERR>.* {
+	cout << "Found missing terminating quotation mark error: " << yytext + 1 << endl;
+	BEGIN(INITIAL);
+}
 
 ":=" cout << "Found assignment operation" << endl;
 "+" cout << "Found addition operation" << endl;
@@ -131,9 +123,6 @@ NAME_CHAR "[A-Za-z_]|\xD0[\x81\x90-\xBF]|\xD1[\x91\x80-\x8F]"
 \n|";" cout << "Found new line" << endl;
 
 (" "|\t)+
-
-.+ cout << "Found unrecognized character(s): " << yytext << endl;
-
 
 %%
 
